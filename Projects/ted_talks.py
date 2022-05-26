@@ -18,7 +18,7 @@ def bonus_round():
         money = [*alt]
 
 
-class counter:
+class Counter:
     def __init__(self):
         self.number = IntVar()
     def up(self):
@@ -28,7 +28,8 @@ class counter:
     def var(self):
         return self.number
 
-class display:
+
+class Display:
     def __init__(self):
         self.window = Tk()
         self.window.title("Counter")

@@ -5,8 +5,8 @@ from os.path import isfile, join
 
 def doXOR():
     path = "C:/Users/JayMc/Downloads/SB_v1.2.2_unsplit/assets/data"
-    shutil.rmtree("decrypted")
-    mkdir("decrypted")
+    shutil.rmtree("../decrypted")
+    mkdir("../decrypted")
     for file in [f for f in listdir(path) if isfile(join(path, f))]:
         with open(path + "/" + file, "rb") as in_file, open("decrypted/" + file, "wb") as out_file:
             input = in_file.read()
@@ -26,7 +26,7 @@ def doXOR():
 
 def customXOR():
     with open("C:/Users/JayMc/Desktop/Coding/Javascript/SB_v1.2.2_unsplit/assets/images/boss.bundle", "rb") as in_file, open(
-            "decrypted/test_bundle.txt", "wb") as out_file:
+            "../decrypted/test_bundle.txt", "wb") as out_file:
         input = in_file.read()
         key = "FORASUMMERSDAY"
         output = []
