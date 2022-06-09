@@ -1,4 +1,4 @@
-from Projects.Python_Class_Learn import main
+from Projects.Math_Help import main
 
 
 if __name__ == "__main__":
