@@ -1,4 +1,4 @@
-from Projects.Math_Help import main
+from Projects.Whipper_Fight import main
 
 
 if __name__ == "__main__":
