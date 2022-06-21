@@ -1,4 +1,4 @@
-from Projects.Whipper_Fight import main
+from Projects.Fractal_Maze_PDA import main
 
 
 if __name__ == "__main__":
