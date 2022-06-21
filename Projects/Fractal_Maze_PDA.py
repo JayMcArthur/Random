@@ -1,18 +1,5 @@
 from automata.pda.dpda import DPDA
 
-my_transitions = {
-    '1-2': '/A',
-    '1-3': '/B',
-    '1-4': 'A/',
-    '1-5': 'B/',
-    '2-4': 'B/',
-    '2-5': '/A',
-    '2-6': 'A/',
-    '3-4': '/B',
-    '6-6': '/B'
-}
-stack_symbols = {'A', 'B', ''}
-
 
 def translate_transitions(dict_to_trans, s_symbols) -> dict:
     created_dict = {}
@@ -58,11 +45,22 @@ def translate_transitions(dict_to_trans, s_symbols) -> dict:
     return created_dict
 
 
+stack_symbols = {'A', 'B', ''}
 maze = DPDA(
     states={'q1', 'q2', 'q3', 'q4', 'q5', 'q6'},
     input_symbols={'1', '2', '3', '4', '5', '6', '(', ')'},
     stack_symbols=stack_symbols,
-    transitions=translate_transitions(my_transitions, stack_symbols),
+    transitions=translate_transitions({
+        '1-2': '/A',
+        '1-3': '/B',
+        '1-4': 'A/',
+        '1-5': 'B/',
+        '2-4': 'B/',
+        '2-5': '/A',
+        '2-6': 'A/',
+        '3-4': '/B',
+        '6-6': '/B'
+        }, stack_symbols),
     initial_state='q1',
     initial_stack_symbol='',
     final_states={'q2'},
