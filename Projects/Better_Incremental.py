@@ -3,20 +3,20 @@ import math as m
 import time
 
 
-def layerTest():
+def layer_test():
     # Better way to calculate offline tiered adders (A add to B, B adds to C, C makes money)
     ##### Var Setup
     # Highest on left
-    layers = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0] + [0]*40
+    layers = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0] + [0]*60
     # how much of the lower tier is created, so L[0] creates P[0] of L[1]
     # This basically shows any bonus could be included in this type of setup
-    production = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1] + [1]*40
+    production = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1] + [1]*60
     # Just holds the output for my method
-    temp = [0] * 100
+    temp = [0] * len(layers)
     # we need to read what we started with so this gets ready for that
     test = layers + [0]
     # Amount of time to pass
-    steps = 24 * 60 * 60 * 60
+    steps = 100 * 60 * 60 * 24
 
     ##### Functions
     # My Math Method

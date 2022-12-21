@@ -37,6 +37,7 @@ def power_arb(_arb_num, _power):
 
     return ten_place + new_num
 
+
 def dec_to_arb(_dec_num):
     ten_place = m.floor(m.log(m.floor(_dec_num), 10)) + 1
     return ten_place - 1 + (_dec_num / (m.pow(10,ten_place)))

@@ -1,3 +1,5 @@
+from itertools import product
+
 monsters = [
     [15, 5, 5, 1],
     [20, 8, 7, 1],
@@ -134,6 +136,9 @@ HP = 0
 ATK = 1
 DEF = 2
 SPD = 3
+FirstStrike = 4
+DoubleStrike = 5
+OneStrike = 6
 
 WIN = 0
 LOSE = 1
@@ -141,22 +146,51 @@ TIE = 2
 STALE = 3
 
 
+def create_lineup(lineup: list) -> list:
+    if len(lineup) == 0:
+
+        LEVEL = 50
+        STARGAZER = [[300,20],[1600,24],[120,24], 'Stargazer']
+        ZODIAC = [[100,0],[1460,30],[0,10], 'Zodiac']
+        SHIELD_OF_THOUSAND = [[0,0],[0,0],[1560,50], 'Shield of Thousand']
+        BLACK_SWORD_BREATH = [[0,0],[200,35],[350,0], 'Black Sword Breath']
+        for A in [STARGAZER, ZODIAC]:
+            for D in [SHIELD_OF_THOUSAND, BLACK_SWORD_BREATH]:
+                temp = []
+                for i in [HP, ATK, DEF]:
+                    temp += [A[i][0] + D[i][0] + (A[i][1] + D[i][1]) * LEVEL]
+                for s in product(range(2), repeat=3):
+                    s = list(map(int, s))
+                    given = 1
+                    for k in range(6 - max(0, sum(s)-given) + 1):
+                        lineup.append(
+                            [temp[HP], temp[ATK] + 25 * LEVEL * (6 - max(0, sum(s)-given) - k), temp[DEF] + 25 * LEVEL * k, 1] + s + [A[3], D[3], 6 - max(0, sum(s)-given) - k, k]
+                        )
+    elif len(lineup[0]) < 7:
+        for i in range(len(lineup)):
+            lineup[i] += [0, 0, 0]
+    return lineup
+
+
 def main() -> None:
+    lineup = create_lineup([])
     record = []
-    for i in range(len(monsters)):
+    for i in range(len(lineup)):
         # Win, Lose, Tie, Stale, ID, Rank
         record.append([[], [], [], [], i, 0])
 
-    for id_a, mon_a in enumerate(monsters):
-        for id_b, mon_b in enumerate(monsters[id_a + 1::]):
+    for id_a, mon_a in enumerate(lineup):
+        for id_b, mon_b in enumerate(lineup[id_a + 1::]):
             id_b += id_a + 1
-            if mon_a[ATK] <= mon_b[DEF] and mon_a[DEF] >= mon_b[ATK]:
+            if id_b == 32 or id_a == 32 or id_b == 37 or id_a == 37:
+                pass
+            if get_attack(mon_a) <= mon_b[DEF] and mon_a[DEF] >= get_attack(mon_b):
                 record[id_a][STALE].append(id_b)
                 record[id_b][STALE].append(id_a)
                 continue
-            elif mon_a[SPD] > mon_b[SPD]:
+            elif mon_a[SPD] > mon_b[SPD] or mon_a[FirstStrike] > mon_b[FirstStrike]:
                 results = fight(mon_a, mon_b)
-            elif mon_a[SPD] < mon_b[SPD]:
+            elif mon_a[SPD] < mon_b[SPD] or mon_a[FirstStrike] < mon_b[FirstStrike]:
                 results = fight(mon_b, mon_a)[::-1]
             else:
                 results = [a + b for a, b in zip(fight(mon_a, mon_b), fight(mon_b, mon_a)[::-1])]
@@ -172,16 +206,16 @@ def main() -> None:
                 record[id_b][TIE].append(id_a)
         # print("Monster ", id_a, " Complete")
         record[id_a][5] = len(record[id_a][WIN]) * 3 + len(record[id_a][TIE]) + len(record[id_a][STALE])
-    # record.sort(key=rank_sort)
-    s_print(record)
+    record.sort(key=rank_sort)
+    s_print(record, lineup)
 
 
 def fight(attacker: list[int], defender: list[int]) -> list[int]:
     a_HP = attacker[HP]
-    a_D = max(0, attacker[ATK] - defender[DEF])
+    a_D = max(0, ((attacker[ATK] * (2**attacker[OneStrike])) - defender[DEF]) * (2**attacker[DoubleStrike]))
     d_HP = defender[HP]
-    d_D = max(0, defender[ATK] - attacker[DEF])
-
+    d_D = max(0, ((defender[ATK] * (2**defender[OneStrike])) - attacker[DEF]) * (2**defender[DoubleStrike]))
+    if a_D == 0 and d_D == 0: return [0, 0]
     while True:
         d_HP -= a_D
         if d_HP < 1:
@@ -191,11 +225,15 @@ def fight(attacker: list[int], defender: list[int]) -> list[int]:
             return [0, 1]
 
 
+def get_attack(attacker: list[int]) -> int:
+    return attacker[ATK] * (2**attacker[OneStrike])
+
+
 def rank_sort(e: list[int]) -> int:
     return e[5]
 
 
-def s_print(records: list) -> None:
-    print("Rank #: Monster # - [Win, Tie, Lose, Stale]")
+def s_print(records: list, lineup: list) -> None:
+    print("Rank #: Player # - [Win, Tie, Lose, Stale] - [FS, DS, OS, Weapon, Shield, STR ^, DEF ^")
     for i in range(len(records)):
-        print(f"Rank {records[i][5]}: {records[i][4] + 1} - [{len(records[i][WIN])}, {len(records[i][TIE])}, {len(records[i][LOSE])}, {len(records[i][STALE])}]")
+        print(f"Rank {records[i][5]}: {records[i][4]} - [{len(records[i][WIN])}, {len(records[i][TIE])}, {len(records[i][LOSE])}, {len(records[i][STALE])}] - {lineup[records[i][4]][4:]}")

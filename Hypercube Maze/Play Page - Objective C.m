@@ -180,10 +180,10 @@ int numberOfMazesPurchased;
 	} else {
 	//[showBestMove setTitle:@"Show Best Move" forSegmentAtIndex:0];
 	//[LandscapeShowbestmove setTitle:@"Show Best Move" forSegmentAtIndex:0];
-                [bLandscapeShowbestmove setTitle:@"Show Best Move" forState:UIControlStateNormal];
-                [bshowBestMove setTitle:@"Show Best Move" forState:UIControlStateNormal];
-                bshowBestMove.backgroundColor=[UIColor clearColor];
-                bLandscapeShowbestmove.backgroundColor=[UIColor clearColor];
+    [bLandscapeShowbestmove setTitle:@"Show Best Move" forState:UIControlStateNormal];
+    [bshowBestMove setTitle:@"Show Best Move" forState:UIControlStateNormal];
+    bshowBestMove.backgroundColor=[UIColor clearColor];
+    bLandscapeShowbestmove.backgroundColor=[UIColor clearColor];
 	showingBestMove=NO;
 	}
 	}
