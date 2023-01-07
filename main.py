@@ -1,4 +1,5 @@
-from Projects.Noita_Eyes import main
+from Projects.sticks\
+    import main
 
 
 if __name__ == "__main__":
