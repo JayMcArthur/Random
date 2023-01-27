@@ -60,8 +60,9 @@ def create_path(n: int) -> str:  # JAM #1 Solver
     return num[n-1]["solve"]
 
 
-maze = 3
-if maze == 1:  # Skeptic Play #1
+maze = 4
+# Skeptic Play #1
+if maze == 1:
     path = '34126(21524126(21524126(2152'
     stack_symbols = {'A', 'B', ''}
     wires = 6
@@ -94,10 +95,12 @@ if maze == 1:  # Skeptic Play #1
         final_states={'q2'},
         acceptance_mode='both'
     )
-elif maze == 2:  # Wolfram #2
+# Wolfram #2
+elif maze == 2:
     path1 = f'3768{chr(10 + 48)}(8{chr(11 + 48)}1)4{chr(13 + 48)}{chr(10 + 48)}{chr(16 + 48)}139{chr(12 + 48)}8{chr(17 + 48)}'
     path = f'3768{chr(10 + 48)}(8{chr(11 + 48)}1){chr(15 + 48)}8{chr(10 + 48)})8{chr(17 + 48)}'
     stack_symbols = {'A', 'B', 'C', ''}
+    fake_states = {}  # Need to add a fake state to fix [f'3-7', 'A/'],
     wires = 18
 
     states = set()
@@ -146,7 +149,8 @@ elif maze == 2:  # Wolfram #2
         final_states={f'q{chr(17 + 48)}'},
         acceptance_mode='both'
     )
-elif maze == 3:  # JAM #1
+# JAM #1
+elif maze == 3:
     # Pattern of Solution
     # N -> N+1
     # N, (, 1, [Solution to get to N - 1], N-1, ), [Solution to get from N - 1 to N without (],  N+1
@@ -159,6 +163,7 @@ elif maze == 3:  # JAM #1
     path = create_path(shape_sides + 1)
     # path = '(2(1)3(1(2)1)4(1(2(1)3)1(2)1)5(1(2(1)3(1(2)1)4)1(2(1)3)1(2)1)6(1(2(1)3(1(2)1)4(1(2(1)3)1(2)1)5)1(2(1)3(1(2)1)4)1(2(1)3)1(2)1)7'
     stack_symbols = {'A', 'B', 'C', 'D', 'E', 'F', '', 'G', 'H'}
+    fake_states = {}
 
     states = set()
     input_symbols = set()
@@ -195,11 +200,46 @@ elif maze == 3:  # JAM #1
         final_states={f'q{shape_sides + 1}'},
         acceptance_mode='both'
     )
+# Inner Frame
+elif maze == 4:
+    path = '4215)412'
+    stack_symbols = {'A', ''}
+    fake_states = {'q5'}
+    wires = 5
 
+    states = set()
+    input_symbols = set()
+    for i in range(wires):
+        states.add(f'q{chr(i + 49)}')
+        input_symbols.add(chr(i + 49))
+    input_symbols.add('(')
+    input_symbols.add(')')
+
+    maze = DPDA(
+        states=states,
+        input_symbols=input_symbols,
+        stack_symbols=stack_symbols,
+        transitions=translate_transitions([
+            ['1-2', 'A/'],
+            ['1-3', '/A'],
+            ['1-4', '/A'],
+            # ['1-4', 'A/'], Fix 1
+            ['1-5', 'A/'],  # Fix 1
+            ['2-3', 'A/'],
+            ['2-4', 'A/'],
+            ['4-5', 'A/'],  # Fix 1
+            ['5-5', 'A/']  # Fix 1
+        ], stack_symbols),
+        initial_state='q1',
+        initial_stack_symbol='',
+        final_states={'q2'},
+        acceptance_mode='both'
+    )
 
 def main() -> None:
     print('Path Accepted') if maze.accepts_input(path) else print('Path Error')
 
     for maze_out in maze.read_input_stepwise(path):
-        # print(f'Input: {maze_out[1] :<{len(path)}}, State: {maze_out[0][0]}{ord(maze_out[0][1::]) - 48:<2}, Stack: {maze_out[2][0][1::]}')
-        print(f'State: {maze_out[0][0]}{ord(maze_out[0][1::]) - 48:<2}, Stack: {maze_out[2][0][1::]}')
+        if maze_out[0] not in fake_states:
+            # print(f'Input: {maze_out[1] :<{len(path)}}, State: {maze_out[0][0]}{ord(maze_out[0][1::]) - 48:<2}, Stack: {maze_out[2][0][1::]}')
+            print(f'State: {maze_out[0][0]}{ord(maze_out[0][1::]) - 48:<2}, Stack: {maze_out[2][0][1::]}')

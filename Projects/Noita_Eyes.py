@@ -125,6 +125,13 @@ def main() -> None:
     for num, c_s in enumerate(converted_strings):
         print(f'Message {num}: {c_s}')
 
+
+    mpl.rcParams['legend.fontzie'] = 10
+    fig = plt.figure()
+    ax = plt.axes(projection="3d")
+    theta = np.linspace(*tri_as_int[L.East_1][0])
+    plt.show()
+
     # print(f'Message 1: {tri_as_int[L.East_1]}')
     # print(f'Message 2: {tri_as_int[L.West_1]}')
     # print(f'Message 3: {tri_as_int[L.East_2]}')
@@ -134,3 +141,7 @@ def main() -> None:
     # print(f'Message 7: {tri_as_int[L.East_4]}')
     # print(f'Message 8: {tri_as_int[L.West_4]}')
     # print(f'Message 9: {tri_as_int[L.East_5]}')
+
+#Hector lima pura
+# Blue Buroes Siss
+# Girl Spain
