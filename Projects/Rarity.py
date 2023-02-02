@@ -1,5 +1,7 @@
 from enum import Enum
-from random import randint
+from math import ceil, floor, log2
+from random import randrange, random
+
 
 
 class Rarity(Enum):
@@ -109,75 +111,6 @@ MERGE_COST = {
     }
 }
 
-# RARITY # ---- DEFAULT P - SCALED - ABILITIES
-# COMMON 1 ---- 00 000 001 - 01 - 0
-# COMMON 2 ---- 00 000 002 - 02 - 0
-# COMMON 3 ---- 00 000 003 - 03 - 0
-# COMMON 4 ---- 00 000 004 - 04 - 0
-# COMMON 5 ---- 00 000 005 - 05 - 0
-# COMMON 6 ---- 00 000 006 - 06 - 0
-# COMMON 7 ---- 00 000 007 - 07 - 0
-# COMMON 8 ---- 00 000 008 - 08 - 0
-# COMMON 9 ---- 00 000 009 - 09 - 0
-# COMMON 10 --- 00 000 010 - 10 - 0
-# UNCOMMON 1 -- 00 000 110 - 11 - 1
-# UNCOMMON 2 -- 00 000 220 - 22 - 1
-# UNCOMMON 3 -- 00 000 330 - 33 - 1
-# UNCOMMON 4 -- 00 000 440 - 44 - 1
-# UNCOMMON 5 -- 00 000 550 - 55 - 1
-# UNCOMMON 6 -- 00 000 660 - 66 - 1
-# UNCOMMON 7 -- 00 000 770 - 77 - 1
-# UNCOMMON 8 -- 00 000 880 - 88 - 1
-# RARE 1 ------ 00 001 400 - 14 - 2
-# RARE 2 ------ 00 002 800 - 28 - 2
-# RARE 3 ------ 00 004 200 - 42 - 2
-# RARE 4 ------ 00 005 700 - 57 - 2
-# RARE 5 ------ 00 007 100 - 71 - 2
-# RARE 6 ------ 00 008 500 - 85 - 2
-# EPIC 1 ------ 00 016 000 - 16 - 3
-# EPIC 2 ------ 00 033 000 - 33 - 3
-# EPIC 3 ------ 00 050 000 - 50 - 3
-# EPIC 4 ------ 00 066 000 - 66 - 3
-# EPIC 5 ------ 00 083 000 - 83 - 3
-# LEGENDARY 1 - 00 250 000 - 25 - 4
-# LEGENDARY 2 - 00 500 000 - 50 - 4
-# LEGENDARY 3 - 00 750 000 - 75 - 4
-# MYTHIC 1 ---- 03 300 000 - 33 - 5
-# MYTHIC 2 ---- 06 600 000 - 66 - 5
-# DIVINE 0 ---- 99 000 000 - 99 - 6
-
-# ITEM TYPES
-# WEAPON
-# ARMOR
-
-# STAT TYPES
-# Health Points
-# Magic Points?
-# Damage
-# Crit Chance
-# Defense
-# Speed
-# # Attack Speed
-# # Dodge Change
-#
-# Intelligence
-# # Spell Damage
-# # Spell Resist
-
-# Enchantments ?
-# HEALTH POINTS
-# ATTACK
-# DEFENSE
-# MAGIC ATTACK (Specialized attack)
-# # Vampire
-# MAGIC DEFENSE (Specialized Defense)
-# # Thorns
-# Speed - 1/Speed time
-# Evasion -
-# Accuracy
-# Critical
-# Luck
-
 
 class Backpack:
     def __init__(self):
@@ -223,7 +156,150 @@ class Backpack:
                 break
 
 
+class Player:
+    def __init__(self):
+        self.defense = 0
+        self.shield = 0
+        self.armor = 0
+        self.max_hp = 0
+        self.health = 0
+        self.regen = 0
+        self.leach = 0
+        self.attack = 0
+        self.speed = 0
+        self.poison = 0
+        self.timer = 0
+        self.inflicted_poison = 0
+        self.used_shield = 0
+
+
+def fight(p1, p2) -> int:
+    world_timer = 0
+    p1.health = p1.max_hp
+    p1.timer = 0
+    p1.inflicted_poison = 0
+    p1.used_shield = 0
+    p2.health = p2.max_hp
+    p2.timer = 0
+    p2.inflicted_poison = 0
+    p2.used_shield = 0
+    while p1.health > 0 and p2.health > 0:
+        p1.timer += (100 + p1.speed)/100
+        p2.timer += (100 + p2.speed)/100
+        world_timer += 1
+        if p1.timer >= 100:
+            # print(f'Player 1 Attacks')
+            p1.timer = p1.timer % 100
+            if p2.shield > p2.used_shield:
+                p2.used_shield += ceil(2*log2(p1.attack))
+                # p2.inflicted_poison += p1.poison
+                # print(f'- Hit Shield')
+            else:
+                attack = p1.attack
+                attack = max(0, attack - p2.defense)
+                # print(f'- Leaches {min(p1.max_hp, p1.health + min(p1.leach, attack)) - p1.health}')
+                p1.health = min(p1.max_hp, p1.health + min(p1.leach, attack))
+                attack = ceil(attack * (100 - p2.armor)/100)
+                p2.health -= attack
+                # print(f'- Did {attack} damage')
+                p2.inflicted_poison += p1.poison
+
+        if p2.timer >= 100:
+            p2.timer = p2.timer % 100
+            # print(f'Player 2 Attacks')
+            if p1.shield > p1.used_shield:
+                p1.used_shield += ceil(2*log2(p2.attack))
+                # p1.inflicted_poison += p2.poison
+                # print(f'- Hit Shield')
+            else:
+                attack = p2.attack
+                attack = max(0, attack - p1.defense)
+                # print(f'- Leaches {min(p2.max_hp, p2.health + min(p2.leach, attack)) - p2.health}')
+                p2.health = min(p2.max_hp, p2.health + min(p2.leach, attack))
+                attack = ceil(attack * (100 - p1.armor) / 100)
+                p1.health -= attack
+                # print(f'- Did {attack} damage')
+                p1.inflicted_poison += p2.poison
+
+        if world_timer >= 100:
+            world_timer = world_timer % 100
+            heal_amount = p1.regen
+            if heal_amount >= p1.inflicted_poison:
+                heal_amount -= p1.inflicted_poison
+                # print(f'P1 Regens {min(p1.max_hp, p1.health + heal_amount) - p1.health}')
+                p1.health = min(p1.max_hp, p1.health + heal_amount)
+            else:
+                p1.inflicted_poison -= heal_amount
+                # print(f'P1 takes {p1.inflicted_poison} Poison')
+                p1.health -= p1.inflicted_poison
+
+            heal_amount = p2.regen
+            if heal_amount >= p2.inflicted_poison:
+                heal_amount -= p2.inflicted_poison
+                # print(f'P2 Regens {min(p2.max_hp, p2.health + heal_amount) - p2.health}')
+                p2.health = min(p2.max_hp, p2.health + heal_amount)
+            else:
+                p2.inflicted_poison -= heal_amount
+                # print(f'P2 takes {p2.inflicted_poison} Poison')
+                p2.health -= p2.inflicted_poison
+    if p1.health > p2.health:
+        print(f'One Win')
+        return 1
+    print(f'Two Win')
+    return 2
+
+
+def create_player() -> object:
+    values = [random() for _ in range(9)]
+    the_sum = sum(values)
+    a = Player()
+    a.defense = floor(values[0] / the_sum * (99 + 99))
+    a.shield = floor(values[1] / the_sum * (99 + 99))
+    a.armor = floor(values[2] / the_sum * (99 + 99))
+    a.max_hp = 100 + floor(values[3] / the_sum * (99 + 99))
+    a.regen = floor(values[4] / the_sum * (99 + 99))
+    a.leach = floor(values[5] / the_sum * (99 + 99))
+    a.attack = 1 + floor(values[6] / the_sum * (99 + 99))
+    a.speed = floor(values[7] / the_sum * (99 + 99))
+    a.poison = floor(values[8] / the_sum * (99 + 99))
+    return a
+
+
 def main() -> None:
+    one = create_player()
+    two = create_player()
+    thr = create_player()
+    fou = create_player()
+
+    for i in range(100):
+        result = fight(one, two)
+        result2 = fight(thr, fou)
+        if result == 1:
+            two = create_player()
+        else:
+            one = create_player()
+        if result2 == 1:
+            fou = create_player()
+        else:
+            thr = create_player()
+
+    print(f'Final 4')
+    print(f'One vs Four')
+    result = fight(one, fou)
+    print(f'Two vs Three')
+    result2 = fight(two, thr)
+    print(f'Finals')
+    if result == 1 and result2 == 1:
+        fight(one, two)
+    elif result == 1 and result2 == 2:
+        fight(one, thr)
+    elif result == 2 and result2 == 1:
+        fight(fou, two)
+    else:
+        fight(fou, thr)
+
+    input("Done")
+
     B = Backpack()
     while True:
         action = input()
