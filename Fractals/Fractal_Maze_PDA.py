@@ -60,7 +60,7 @@ def create_path(n: int) -> str:  # JAM #1 Solver
     return num[n-1]["solve"]
 
 
-maze = 4
+maze = 2
 # Skeptic Play #1
 if maze == 1:
     path = '34126(21524126(21524126(2152'
@@ -241,5 +241,5 @@ def main() -> None:
 
     for maze_out in maze.read_input_stepwise(path):
         if maze_out[0] not in fake_states:
-            # print(f'Input: {maze_out[1] :<{len(path)}}, State: {maze_out[0][0]}{ord(maze_out[0][1::]) - 48:<2}, Stack: {maze_out[2][0][1::]}')
-            print(f'State: {maze_out[0][0]}{ord(maze_out[0][1::]) - 48:<2}, Stack: {maze_out[2][0][1::]}')
+            print(f'Input: {maze_out[1] :<{len(path)}}, State: {maze_out[0][0]}{ord(maze_out[0][1::]) - 48:<2}, Stack: {maze_out[2][0][1::]}')
+            # print(f'State: {maze_out[0][0]}{ord(maze_out[0][1::]) - 48:<2}, Stack: {maze_out[2][0][1::]}')
