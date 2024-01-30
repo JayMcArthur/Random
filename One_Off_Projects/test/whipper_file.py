@@ -30,10 +30,10 @@ def decrypt(f_in, f_out):
 
 
 def main():
-    dec_in = "D:/Coding/Python/Random/Projects/test/Whipper_20230621_194907.zip"
-    dec_out = "D:/Coding/Python/Random/Projects/test/box2.hive"
-    enc_in = "D:/Coding/Python/Random/Projects/test/box.hive"
-    enc_out = "D:/Coding/Python/Random/Projects/test/Whipper_20230629_194907.zip"
+    dec_in = "D:/Coding/Python/Random/One_Off_Projects/test/Whipper_20230621_194907.zip"
+    dec_out = "D:/Coding/Python/Random/One_Off_Projects/test/box2.hive"
+    enc_in = "D:/Coding/Python/Random/One_Off_Projects/test/box.hive"
+    enc_out = "D:/Coding/Python/Random/One_Off_Projects/test/Whipper_20230629_194907.zip"
     decrypt(dec_in, dec_out)
     #encrypt(enc_in, enc_out)
 

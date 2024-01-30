@@ -37,7 +37,7 @@ def method_4(x, n=2):
 
 
 # Loops of loops of loops of ... aka Fast growing Hierarchy
-# F[m]
+# F[m] (All below is ℵ₀ aleph_0)
 def method_5(i, x):
     if i == 0:
         return x + 1
@@ -166,7 +166,8 @@ class methodNine:
         if n == 0: return self.g(x)
         elif x == 0: return self.h(n - 1, self.g(n))
         else: return self.h(n - 1, self.g(self.h(n, x - 1)))
-    # Also Below, Tetrational Level BEAF,
+
+# Also Below, Tetrational Level BEAF,
 # A look at the Goodstein Sequence (aka we count the steps in a Fast growing Hierarchy
 #
 # Example 1
@@ -183,7 +184,7 @@ class methodNine:
 # aka F[ω^ω](N) where N is basically Infinity
 # This means Goodstein is similar to the height of power towers of ω in the F[]
 # Another name for F[ω^ω^ω^etc...] of height ω is ε₀
-# aka Goodstein grows at F[ε₀]
+# aka Goodstein grows at F[ε₀] (All below is ℵ₁ \aleph_1)
 
 # F[ε₀ + n]
 
@@ -203,7 +204,7 @@ class methodNine:
 # ------ ω^ω^(ε₀·2) = ω^(ω^ε₀)^2 = ω^ε₀^2 = ω^(ε₀·ε₀) = (ω^ε₀)^ε₀ = ε₀^ε₀
 # ------ ω^ω^ω^(ε₀·2) = ω^ε₀^ε₀ = ω^ε₀^(1+ε₀) = ω^(ε₀·ε₀^ε₀) = (ω^ε₀)^ε₀^ε₀ = ε₀^ε₀^ε
 
-# F[ε[ε[...ε[ε₀]]]] = ζ₀
+# F[ε[ε[...ε[ε₀]]]] = ζ₀ (All below is ℵω \aleph_Omega)
 
 # ζ₀ same rules as ε
 # F[ε[ε[...ε[ζ₀ + 1]]]] = ζ₁
@@ -237,14 +238,32 @@ class methodNine:
 # φ(1,1,x) = β[x]
 # ETC
 
-# Small Veblen Ordinal
+# Small Veblen Notion
 # SVO(n)
 # SVO(0) = φ(1)
 # SVO(1) = φ(1,0)
 # SVO(2) = φ(1,0,0)
 # SVO(3) = φ(1,0,0,0)
 # ETC
+# Small Veblen Ordinal
+# SVO(ω)
+# Large Veblen Ordinal
 
+# Switch to Ordinal Collapsing Function
+# https://youtu.be/JEw3PCEQdKg
+
+# ω2
+# ωωωω
+# ϵ ζ η Γ
+# N
+# ℵ0
+# Ω
+#  φα
+#  ω1 or
+# Ω\Omega
+# ∞"
+# ψ(εΩ2εΩ2ΩΩ22+Ω+2)
+# φ
 
 # F [Theta · (Ω^ω · ω)] = TREE Sequence
 # Xi Function

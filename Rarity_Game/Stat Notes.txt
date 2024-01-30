@@ -1,0 +1,54 @@
+9 Main stats
+- Defense (Blocks x Attack)
+- Shield (Blocks x instances of damage) (prevent leach)
+- Armor (Blocks % of Damage) (wears down?)
+- Health
+- Regen (Gain X health at end of turn, wears down poison)
+- Leach (gain health equal to un defense/shield attack)
+- Attack
+- Speed (attack faster)
+- Poison (Doesn't do damage on turn applied but every turn after)
+
+Alt STAT TYPES / IDEAS
+- Health Points
+- Magic Points?
+- Damage
+- Crit Chance
+- Defense
+- Speed
+- - Attack Speed
+- - Dodge Change
+- Accuracy
+- Evasion
+- Elemental Affinity
+- Mana regeneration
+- Crit
+- Intelligence
+- - Spell Damage
+- - Spell Resist
+- VAMP
+- Thorn
+# HEALTH POINTS
+# ATTACK
+# DEFENSE
+# MAGIC ATTACK (Specialized attack)
+# # Vampire
+# MAGIC DEFENSE (Specialized Defense)
+# # Thorns
+# Speed - 1/Speed time
+# Evasion -
+# Accuracy
+# Critical
+# Luck
+
+Gem Bonuses?
+Magic Attack?
+- 5x sub things
+Something else?
+- 5x sub things
+
+
+How stats are applied?
+10/(10+Def) instead of flat block?
+
+
